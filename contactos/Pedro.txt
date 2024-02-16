@@ -1,0 +1,3 @@
+Nombre: Pedro
+Telefono: 123456789
+Categoria: cliente

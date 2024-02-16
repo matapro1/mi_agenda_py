@@ -5,6 +5,13 @@ import os
 CARPETA = 'contactos/'
 EXTENCION = '.txt' #Extencion de archivos
 
+# Contactos
+class Contacto:
+    def __init__(self, nombre, telefono, categoria):
+        self.nombre = nombre
+        self.telefono = telefono
+        self.categoria = categoria
+
 # Definiste la función principal de tu aplicación, llamada 'app'.
 def app():
     # Dentro de esta función, llamas a otra función llamada 'crear_directorio'.
@@ -45,7 +52,21 @@ def agregar_contacto():
     nombre_contacto = input('Nombre del contacto:\r\n')
 
     with open(CARPETA + nombre_contacto + EXTENCION, 'w') as archivo:
-        archivo.write('Nombre: ' + nombre_contacto + '\r\n')
+        
+        #resto de los campos
+        telefono_contacto = input('Agrega el telefono:\r\n')
+        categoria_contacto = input('Categoria Contacto:\r\n')
+
+        # Instanciar la clase
+        contacto = Contacto(nombre_contacto, telefono_contacto, categoria_contacto)
+        
+        # Escribir en el archivo
+        archivo.write('Nombre: ' + contacto.nombre + '\r\n')
+        archivo.write('Telefono: ' + contacto.telefono + '\r\n')
+        archivo.write('Categoria: ' + contacto.categoria + '\r\n')
+
+        #Mostrar un mensaje de exito
+        print('\r\n Contacto creado correctamente \r\n')
     
 
 def mostrar_menu():
