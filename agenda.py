@@ -3,6 +3,7 @@ import os
 
 # Definiste una constante 'CARPETA' que contiene el nombre del directorio que quieres crear.
 CARPETA = 'contactos/'
+EXTENCION = '.txt' #Extencion de archivos
 
 # Definiste la función principal de tu aplicación, llamada 'app'.
 def app():
@@ -21,7 +22,7 @@ def app():
 
         #ejecutar las opciones
         if opcion == 1:
-            print('Agregar contacto')
+            agregar_contacto()
             preguntar = False
         elif opcion == 2:
             print('Editar contacto')
@@ -37,6 +38,15 @@ def app():
             preguntar = False
         else:
             print('Opcion no valida, intente de nuevo')
+
+
+def agregar_contacto():
+    print('Escribe los datos para agregar el nuevo contacto')
+    nombre_contacto = input('Nombre del contacto:\r\n')
+
+    with open(CARPETA + nombre_contacto + EXTENCION, 'w') as archivo:
+        archivo.write('Nombre: ' + nombre_contacto + '\r\n')
+    
 
 def mostrar_menu():
     print('Seleccione del menu lo que desea hacer:')
