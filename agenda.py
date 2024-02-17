@@ -54,9 +54,31 @@ def editar_contacto():
     existe = existe_contacto(nombre_anterior)
 
     if existe:
-        print('Puedes editar')
+        with open(CARPETA + nombre_anterior + EXTENCION, 'w') as archivo:
+            #Resto de los campos
+            nombre_contacto = input('Agrega el nuevo nombre: \r\n')
+            telefono_contacto = input('Agrega el nuevo telefono: \r\n')
+            categoria_contacto = input('Agrega la nueva categoria: \r\n')
+
+            #Instanciar
+            contacto = Contacto(nombre_contacto, telefono_contacto, categoria_contacto)
+
+            # Escribir en el archivo
+            archivo.write('Nombre: ' + contacto.nombre + '\r\n')
+            archivo.write('Telefono: ' + contacto.telefono + '\r\n')
+            archivo.write('Categoria: ' + contacto.categoria + '\r\n')
+
+            # Renombrar el archivo
+            os.rename(CARPETA + nombre_anterior + EXTENCION, CARPETA + nombre_contacto +EXTENCION)
+
+            #Mostrar un mensaje de exito
+            print('\r\n Contacto editado correctamente \r\n')
     else:
         print('Ese contacto no existe')
+
+    # Reiniciar la aplicacion
+    app()
+
 def agregar_contacto():
     print('Escribe los datos para agregar el nuevo contacto')
     nombre_contacto = input('Nombre del contacto:\r\n')
