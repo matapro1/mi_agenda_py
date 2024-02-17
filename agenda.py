@@ -3,7 +3,7 @@ import os
 
 # Definiste una constante 'CARPETA' que contiene el nombre del directorio que quieres crear.
 CARPETA = 'contactos/'
-EXTENCION = '.txt' #Extensión de archivos
+EXTENSION = '.txt' #Extensión de archivos
 
 # Contactos
 class Contacto:
@@ -17,94 +17,82 @@ def app():
     # Dentro de esta función, llamas a otra función llamada 'crear_directorio'.
     crear_directorio()
 
-    # Muestra el menu de opciones
-    mostrar_menu()
+    
 
-    #preguntar al usuario la accion a realizar
-    preguntar =True
-    while preguntar:
-        opcion = input('Seleccione una opcion: \r\n')
-        opcion = int(opcion)
+    # Preguntar al usuario la acción a realizar
+    while True:
+        # Muestra el menu de opciones
+        mostrar_menu()
 
-        #ejecutar las opciones
-        if opcion == 1:
-            agregar_contacto()
-            preguntar = False
-        elif opcion == 2:
-            editar_contacto()
-            preguntar = False
-        elif opcion == 3:
-            mostrar_contactos()
-            preguntar = False
-        elif opcion == 4:
-            buscar_contacto()
-            preguntar = False
-        elif opcion == 5:
-            eliminar_contacto()
-            preguntar = False
-        else:
-            print('Opcion no valida, intente de nuevo')
+        #Preguntar al usuario la acción a realizar
+        opcion = input('Seleccione una opción: \r\n')
+        try:
+            opcion = int(opcion)
+            # Ejecutar las opciones
+            if opcion == 1:
+                agregar_contacto()
+            elif opcion == 2:
+                editar_contacto()
+            elif opcion == 3:
+                mostrar_contactos()
+            elif opcion == 4:
+                buscar_contacto()
+            elif opcion == 5:
+                eliminar_contacto()
+            elif opcion == 6:
+                print("Saliendo de la aplicación.")
+                break  # Salir del bucle while
+            else:
+                print('Opción no válida, intente de nuevo')
+        except ValueError:
+            print("Entrada inválida. Por favor, ingrese un número para seleccionar una opción del menú.")  # Mensaje de error más descriptivo
 
 
 def eliminar_contacto():
-    nombre = input('Seleccione el contacto que desea eliminar: \r\n')
-
+    nombre = input('Seleccione el contacto que desea eliminar: \r\n').lower()
     try:
-        os.remove(CARPETA + nombre + EXTENCION)
+        os.remove(CARPETA + nombre + EXTENSION)
         print('\r\nEliminado correctamente')
-    except espression as identifier:
+    except FileNotFoundError:
         print('No existe ese contacto')
-
-    # Reiniciar la aplicacion
-    app()
+    # No es necesario reiniciar la aplicación
 
 def buscar_contacto():
-    nombre = input('Seleccione el contacto que desea buscar: \r\n')
-
+    nombre = input('Seleccione el contacto que desea buscar: \r\n').lower()
     try:
-        with open(CARPETA + nombre + EXTENCION) as contacto:
-            print('\r\n Informacion del contacto: \r\n')
+        with open(CARPETA + nombre + EXTENSION) as contacto:
+            print('\r\n Información del contacto: \r\n')
             for linea in contacto:
                 print(linea.rstrip())
             print('\r\n')
-    except IOError:
+    except FileNotFoundError:
         print('El archivo no existe')
-        print(IOError)
-    # Reiniciar la aplicacion
-    app()
-
+    # No es necesario reiniciar la aplicación
 
 def mostrar_contactos():
     archivos = os.listdir(CARPETA)
-
-    archivos_txt = [i for i in archivos if i.endswith(EXTENCION)]
-
+    archivos_txt = [i for i in archivos if i.endswith(EXTENSION)]
     for archivo in archivos_txt:
         with open(CARPETA + archivo) as contacto:
             for linea in contacto:
-                #Imprime los contenidos
+                # Imprime los contenidos
                 print(linea.rstrip())
-            #Imprime un separador entre contactos
+            # Imprime un separador entre contactos
             print('\r\n')
-    # Reiniciar la aplicacion
-    app()
-
+    # No es necesario reiniciar la aplicación
 
 def editar_contacto():
     print('Escribe el nombre del contacto a editar')
-    nombre_anterior = input('Nombre del contacto que desea editar:\r\n')
-
-    #Revizar si el archivo ya existe antes de editarlo
+    nombre_anterior = input('Nombre del contacto que desea editar:\r\n').lower()
     existe = existe_contacto(nombre_anterior)
-
     if existe:
-        with open(CARPETA + nombre_anterior + EXTENCION, 'w') as archivo:
-            #Resto de los campos
+        with open(CARPETA + nombre_anterior + EXTENSION, 'w') as archivo:
+            # Resto de los campos
             nombre_contacto = input('Agrega el nuevo nombre: \r\n')
             telefono_contacto = input('Agrega el nuevo telefono: \r\n')
             categoria_contacto = input('Agrega la nueva categoria: \r\n')
 
-            #Instanciar
+            # Instanciar
             contacto = Contacto(nombre_contacto, telefono_contacto, categoria_contacto)
 
             # Escribir en el archivo
@@ -113,28 +101,21 @@ def editar_contacto():
             archivo.write('Categoria: ' + contacto.categoria + '\r\n')
 
             # Renombrar el archivo
-            os.rename(CARPETA + nombre_anterior + EXTENCION, CARPETA + nombre_contacto +EXTENCION)
+            os.rename(CARPETA + nombre_anterior + EXTENSION, CARPETA + nombre_contacto + EXTENSION)
 
-            #Mostrar un mensaje de exito
+            # Mostrar un mensaje de éxito
             print('\r\n Contacto editado correctamente \r\n')
     else:
         print('Ese contacto no existe')
-
-    # Reiniciar la aplicacion
-    app()
+    # No es necesario reiniciar la aplicación
 
 def agregar_contacto():
     print('Escribe los datos para agregar el nuevo contacto')
-    nombre_contacto = input('Nombre del contacto:\r\n')
-
-    #Revizar si el archivo ya existe antes de crearlo
+    nombre_contacto = input('Nombre del contacto:\r\n').lower()
     existe = existe_contacto(nombre_contacto)
-
     if not existe:
-
-        with open(CARPETA + nombre_contacto + EXTENCION, 'w') as archivo:
-            
-            #resto de los campos
+        with open(CARPETA + nombre_contacto + EXTENSION, 'w') as archivo:
+            # Resto de los campos
             telefono_contacto = input('Agrega el telefono:\r\n')
             categoria_contacto = input('Categoria Contacto:\r\n')
 
@@ -146,14 +127,11 @@ def agregar_contacto():
             archivo.write('Telefono: ' + contacto.telefono + '\r\n')
             archivo.write('Categoria: ' + contacto.categoria + '\r\n')
 
-            #Mostrar un mensaje de exito
+            # Mostrar un mensaje de éxito
             print('\r\n Contacto creado correctamente \r\n')
-    
     else:
-      print('Ese contacto ya existe')
-
-    #Reiniciar la app
-    app()
+        print('Ese contacto ya existe')
+    # No es necesario reiniciar la aplicación
 
 def mostrar_menu():
     print('Seleccione del menu lo que desea hacer:')
@@ -162,7 +140,7 @@ def mostrar_menu():
     print('3) Ver contactos')
     print('4) Buscar contacto')
     print('5) Eliminar contacto')
-    
+    print('6) Salir de la aplicación')
 
 # Aquí defines la función 'crear_directorio'.
 def crear_directorio():
@@ -174,8 +152,8 @@ def crear_directorio():
         # Si el directorio ya existe, imprimes un mensaje informando al usuario.
         print('La carpeta ya existe')
 
-
 def existe_contacto(nombre):
-    return os.path.isfile(CARPETA + nombre + EXTENCION)
+    return os.path.isfile(CARPETA + nombre.lower() + EXTENSION)
+
 # Finalmente, llamas a la función principal 'app' para iniciar tu aplicación.
 app()
