@@ -1,0 +1,3 @@
+Nombre: Karen
+Telefono: 1213156
+Categoria: cliente

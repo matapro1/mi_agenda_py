@@ -51,23 +51,33 @@ def agregar_contacto():
     print('Escribe los datos para agregar el nuevo contacto')
     nombre_contacto = input('Nombre del contacto:\r\n')
 
-    with open(CARPETA + nombre_contacto + EXTENCION, 'w') as archivo:
-        
-        #resto de los campos
-        telefono_contacto = input('Agrega el telefono:\r\n')
-        categoria_contacto = input('Categoria Contacto:\r\n')
+    #Revizar si el archivo ya existe antes de crearlo
+    existe = os.path.isfile(CARPETA + nombre_contacto + EXTENCION)
 
-        # Instanciar la clase
-        contacto = Contacto(nombre_contacto, telefono_contacto, categoria_contacto)
-        
-        # Escribir en el archivo
-        archivo.write('Nombre: ' + contacto.nombre + '\r\n')
-        archivo.write('Telefono: ' + contacto.telefono + '\r\n')
-        archivo.write('Categoria: ' + contacto.categoria + '\r\n')
+    if not existe:
 
-        #Mostrar un mensaje de exito
-        print('\r\n Contacto creado correctamente \r\n')
+        with open(CARPETA + nombre_contacto + EXTENCION, 'w') as archivo:
+            
+            #resto de los campos
+            telefono_contacto = input('Agrega el telefono:\r\n')
+            categoria_contacto = input('Categoria Contacto:\r\n')
+
+            # Instanciar la clase
+            contacto = Contacto(nombre_contacto, telefono_contacto, categoria_contacto)
+            
+            # Escribir en el archivo
+            archivo.write('Nombre: ' + contacto.nombre + '\r\n')
+            archivo.write('Telefono: ' + contacto.telefono + '\r\n')
+            archivo.write('Categoria: ' + contacto.categoria + '\r\n')
+
+            #Mostrar un mensaje de exito
+            print('\r\n Contacto creado correctamente \r\n')
     
+    else:
+      print('Ese contacto ya existe')
+
+    #Reiniciar la app
+    app()
 
 def mostrar_menu():
     print('Seleccione del menu lo que desea hacer:')
