@@ -3,7 +3,7 @@ import os
 
 # Definiste una constante 'CARPETA' que contiene el nombre del directorio que quieres crear.
 CARPETA = 'contactos/'
-EXTENCION = '.txt' #Extencion de archivos
+EXTENCION = '.txt' #Extensión de archivos
 
 # Contactos
 class Contacto:
@@ -21,7 +21,6 @@ def app():
     mostrar_menu()
 
     #preguntar al usuario la accion a realizar
-
     preguntar =True
     while preguntar:
         opcion = input('Seleccione una opcion: \r\n')
@@ -41,10 +40,23 @@ def app():
             buscar_contacto()
             preguntar = False
         elif opcion == 5:
-            print('Eliminar contacto')
+            eliminar_contacto()
             preguntar = False
         else:
             print('Opcion no valida, intente de nuevo')
+
+
+def eliminar_contacto():
+    nombre = input('Seleccione el contacto que desea eliminar: \r\n')
+
+    try:
+        os.remove(CARPETA + nombre + EXTENCION)
+        print('\r\nEliminado correctamente')
+    except espression as identifier:
+        print('No existe ese contacto')
+
+    # Reiniciar la aplicacion
+    app()
 
 def buscar_contacto():
     nombre = input('Seleccione el contacto que desea buscar: \r\n')
@@ -60,6 +72,8 @@ def buscar_contacto():
         print(IOError)
     # Reiniciar la aplicacion
     app()
+
+
 def mostrar_contactos():
     archivos = os.listdir(CARPETA)
 
@@ -72,7 +86,8 @@ def mostrar_contactos():
                 print(linea.rstrip())
             #Imprime un separador entre contactos
             print('\r\n')
-
+    # Reiniciar la aplicacion
+    app()
 
 
 def editar_contacto():
@@ -113,7 +128,7 @@ def agregar_contacto():
     nombre_contacto = input('Nombre del contacto:\r\n')
 
     #Revizar si el archivo ya existe antes de crearlo
-    existe = existe_contacto(nombre_anterior)
+    existe = existe_contacto(nombre_contacto)
 
     if not existe:
 
